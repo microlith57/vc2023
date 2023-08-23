@@ -1,0 +1,301 @@
+<style>
+  body {
+    font-family: "Courier New", Courier, monospace;
+    display: flex;
+    justify-content: center;
+  }
+
+  main {
+    margin: 2em;
+    max-width: 30em;
+    min-width: 15em;
+    margin-bottom: 5em;
+  }
+
+  h1:not(:first-child) {
+    margin-top: 3em;
+  }
+
+  h2:not(:first-child) {
+    margin-top: 2.5em;
+  }
+
+  h3:not(:first-child) {
+    margin-top: 1.5em;
+  }
+
+  .annot_input {
+    background-color: #00fff0;
+  }
+
+  .annot_output {
+    background-color: #ffbf00;
+  }
+
+  .annot_purple {
+    color: #8d34ff;
+  }
+
+  .annot_magenta {
+    color: #ff008a;
+  }
+
+  .annot_num {
+    color: #9f528e;
+  }
+</style>
+
+<body>
+  <main>
+    <h1>Journey to Computation</h1>
+
+    Music: <i>The World, and So Much More</i> from the album Music for Virtual
+    Museums by Hakita
+
+    <h2 id="VanillaContest2023_microlith57_part1">Part 1: Foundations</h2>
+
+    <h3 id="VanillaContest2023_microlith57_1a">
+      <span class="fig_num">Figure 1a.</span>
+      <i class="fig_title">Communication</i>
+    </h3>
+    <p>
+      Here, you can see that the input block (marked
+      <i class="annot_input">cyan</i>) has a spring attached to it.
+    </p>
+    <p>
+      When it moves into the jelly, it bounces it upwards into the output move
+      block's spring, activating the block.
+    </p>
+    <p>
+      The output block then moves into the
+      <i class="annot_output">yellow</i> space, meaning a signal has been sent.
+    </p>
+    <p>
+      With this method, pulse signals (ones that last a short time) can be
+      communicated across distances.
+    </p>
+    <p>
+      With small modifications, this method also allows signals to be turned,
+      split, and combined like an or-gate.
+    </p>
+
+    <h3 id="VanillaContest2023_microlith57_1b">
+      <span class="fig_num">Figure 1b.</span>
+      <i class="fig_title">Crossing Signals</i>
+    </h3>
+    <p>
+      In general, it's risky to have two move blocks cross paths, because they
+      can hit each other and break.
+    </p>
+    <p>
+      By using jellies instead, which never hit each other, this problem can be
+      avoided.
+    </p>
+    <p>
+      In this setup, the
+      <span class="annot_purple">horizontal path</span> doesn't interact with
+      the <span class="annot_magenta">vertical one</span>.
+    </p>
+    <p>
+      Bouncing jellies horizontally is more complex than bouncing them
+      vertically — they are not self-returning, so precise spring placement is
+      needed.
+    </p>
+    <p>
+      This setup is reliable because the horizontal jelly ends up back where it
+      started each time.
+    </p>
+
+    <h3 id="VanillaContest2023_microlith57_1c">
+      <span class="fig_num">Figure 1c.</span> <i class="fig_title">State</i>
+    </h3>
+    <p>
+      Of course, computers aren't just made of wires — you also need to have
+      some way to store state information.
+    </p>
+    <p>
+      This is possible because of a nice property of move blocks: they cannot
+      reform if there's anything in the way.
+    </p>
+    <p>
+      Here, I've placed two move blocks intersecting one another, forming a
+      <i>memory cell</i>.
+    </p>
+    <p>
+      Notice that the right block has a spring with a jelly that immediately
+      triggers it, then gets fizzled — this is to ensure only one move block is
+      solid at a time.
+    </p>
+    <p>
+      By convention, when the left move block is present, the cell is
+      <i>unset</i>, and when the right one is, it is <i>set</i>.
+    </p>
+
+    <h3 id="VanillaContest2023_microlith57_1d">
+      <span class="fig_num">Figure 1d.</span> <i class="fig_title">And Gate</i>
+    </h3>
+    <p>
+      This is a practical use of the memory cell — a <i>logic gate</i> that lets
+      <span class="annot_purple">the upper input</span> pass through only if the
+      gate's memory is set.
+    </p>
+    <p>
+      The <span class="annot_magenta">lower input</span> toggles the state of
+      the memory.
+    </p>
+
+    <h3 id="VanillaContest2023_microlith57_1e">
+      <span class="fig_num">Figure 1e.</span>
+      <i class="fig_title">3-Bit And Gate</i>
+    </h3>
+    <p>This is effectively three and gates next to each other.</p>
+    <p>
+      Note that <span class="annot_purple">the upper input</span> can only pass
+      through if all three memory cells are set.
+    </p>
+    <p>This construction in particular will be important for later.</p>
+
+    <h2 id="VanillaContest2023_microlith57_part2">Part 2: The 110 Automaton</h2>
+
+    <h3 id="VanillaContest2023_microlith57_2ai">
+      <span class="fig_num">Figure 2a(i).</span>
+      <i class="fig_title">110 Logic Table</i>
+    </h3>
+    <p>
+      A Turing machine is a type of program used as a yardstick to measure
+      computation.
+    </p>
+    <p>
+      In particular, if something can in theory perfectly simulate a Turing
+      machine, then it is called Turing complete.
+    </p>
+    <p>
+      This is useful, because (as far as we know) a Turing machine can simulate
+      anything.
+    </p>
+    <p>
+      A 1-dimensional cellular automaton is effectively the simplest thing
+      capable of simulating a Turing machine.
+    </p>
+    <p>
+      Such an automaton is made of a strip of cells, each of which is either on
+      or off.
+    </p>
+    <p>
+      At each unit of time, all the cells simultaneously decide on a new state,
+      based on their current state and those of their neighbours.
+    </p>
+    <p>
+      This means there are eight rules necessary to cover all the possible
+      cases.
+    </p>
+    <p>
+      The 110 automaton is a specific form of a 1D cellular automaton, and its
+      rules are depicted above.
+    </p>
+    <p>
+      The top row of each rule has three lights, representing the left
+      neighbour, the cell itself, and the right neighbour.
+    </p>
+    <p>The bottom row of each rule depicts the new state for the cell.</p>
+    <p>
+      The 110 automaton is special in that a mechanism has been described by
+      which it can simulate a Turing machine.
+    </p>
+
+    <h3 id="VanillaContest2023_microlith57_2aii">
+      <span class="fig_num">Figure 2a(ii).</span>
+      <i class="fig_title">110 Toggle Conditions</i>
+    </h3>
+    <p>
+      Of interest is that these eight rules can be combined into two simple
+      conditions.
+    </p>
+    <p>
+      A cell toggles its state if
+      <span class="annot_purple"
+        >it is off, and its right-hand neighbour is on</span
+      >, or
+      <span class="annot_magenta"
+        >it is on and so are both of its neighbours</span
+      >.
+    </p>
+
+    <h3 id="VanillaContest2023_microlith57_2b">
+      <span class="fig_num">Figure 2b.</span> <i class="fig_title">110 Gate</i>
+    </h3>
+    <p>This is the central part of a 110 automaton — the <i>110 gate</i>.</p>
+    <p>
+      The two conditions are represented by the
+      <span class="annot_purple">upper</span> and
+      <span class="annot_magenta">lower</span> move blocks respectively; if
+      either reaches the right-hand side, an output is triggered.
+    </p>
+    <p>
+      Both of these blocks are activated by the input marked
+      <span class="annot_num">1</span>.
+    </p>
+    <p>
+      The memory cells controlled by inputs <span class="annot_num">2</span>,
+      <span class="annot_num">3</span>, and
+      <span class="annot_num">4</span> represent the left neighbour, the current
+      cell, and the right neighbour respectively.
+    </p>
+
+    <h3 id="VanillaContest2023_microlith57_2c">
+      <span class="fig_num">Figure 2c.</span> <i class="fig_title">110 Cell</i>
+    </h3>
+    <p>
+      This is a <i>110 cell</i> (a single part of the full automaton), which is
+      just a 110 gate with extra signalling added.
+    </p>
+    <p>
+      There is <span class="annot_purple">a signal from the output</span> of the
+      110 gate that leads to <span class="annot_output">outputs</span>
+      <span class="annot_num">2</span> and <span class="annot_num">4</span>, so
+      that the neighbour cells are kept up to date on this cell's state.
+    </p>
+    <p>
+      <span class="annot_purple">This signal</span> also toggles the memory
+      corresponding to this cell.
+    </p>
+    <p>
+      Also, the left and right neighbours
+      <span class="annot_magenta">send signals</span> using
+      <span class="annot_input">inputs</span>
+      <span class="annot_num">2</span> and <span class="annot_num">4</span> of
+      this cell, which toggle this cell's memory of their states.
+    </p>
+    <p>
+      Note that <span class="annot_input">inputs</span>
+      <span class="annot_num">2</span> and <span class="annot_num">4</span> are
+      at the same elevation as the respective
+      <span class="annot_output">outputs</span> — this is because they would be
+      direct connections to the identical neighbour cells.
+    </p>
+    <p>See below in the appendix for an unannotated version of this figure.</p>
+
+    <h3 id="VanillaContest2023_microlith57_2d">
+      <span class="fig_num">Figure 2d.</span>
+      <i class="fig_title">110 Automaton</i>
+    </h3>
+    <p>Here, three 110 cells have been joined together in a strip.</p>
+    <p>
+      A full 110 automaton would consist of a very long strip of these, with the
+      cells set to initial states according to some pattern.
+    </p>
+    <p>
+      With enough of these, it is possible to simulate the functions of any
+      computer.
+    </p>
+
+    <h1>Journey to Computation B-Side</h1>
+
+    <p>
+      <i>
+        The textual meaning of this map, that Turing-completeness in vanilla
+        Celeste is possible, is not the primary meaning.
+      </i>
+    </p>
+  </main>
+</body>
